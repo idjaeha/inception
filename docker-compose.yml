@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  nginx:
+    build: nginx/
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "~/Desktop/inception/website:/var/www/html"
+    depends_on:
+      - wordpress
+    networks:
+      - intra
+    restart: always
+    env_file:
+      - .env
+    tty: true
+
+  wordpress:
+    build: wordpress/
+    container_name: wordpress
+    ports:
+      - "9000:9000"
+    volumes:
+      - "~/Desktop/inception/website:/var/www/html"
+    depends_on:
+      - mariadb
+    networks:
+      - intra
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_HOST:       ${MYSQL_HOST}
+      WP_DATABASE_NAME: ${WP_DATABASE_NAME}
+      WP_DATABASE_USR:  ${WP_DATABASE_USR}
+      WP_DATABASE_PWD:  ${WP_DATABASE_PWD}
+      DOMAIN_NAME:      ${DOMAIN_NAME}
+      WP_TITLE:         ${WP_TITLE}
+      WP_ADMIN_USR:     ${WP_ADMIN_USR}
+      WP_ADMIN_PWD:     ${WP_ADMIN_PWD}
+      WP_ADMIN_EMAIL:   ${WP_ADMIN_EMAIL}
+      WP_USR:           ${WP_USR}
+      WP_PWD:           ${WP_PWD}
+      WP_EMAIL:         ${WP_EMAIL}
+    tty: true
+
+  mariadb:
+    build: mariadb/
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - "~/Desktop/inception/mariadb:/var/lib/mysql"
+    networks:
+      - intra
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PWD:   ${MYSQL_ROOT_PWD}
+      WP_DATABASE_NAME: ${WP_DATABASE_NAME}
+      WP_DATABASE_USR:  ${WP_DATABASE_USR}
+      WP_DATABASE_PWD:  ${WP_DATABASE_PWD}
+    tty: true
+
+networks:
+  intra:
+    driver: bridge

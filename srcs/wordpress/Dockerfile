@@ -1,4 +1,4 @@
-FROM alpine:3.15.0
+FROM alpine:3.13
 
 RUN	apk update && apk upgrade && apk add --no-cache \
   wget				\
@@ -8,7 +8,7 @@ RUN	apk update && apk upgrade && apk add --no-cache \
   php8-fpm php8-json php8-zlib php8-xml php8-xmlwriter php8-simplexml php8-pdo php8-phar php8-openssl \
   php8-pdo_mysql php8-mysqli php8-session \
   php8-gd php8-iconv php8-gmp php8-zip \
-  php8-curl php8-opcache php8-ctype php8-apcu \
+  php8-curl php8-opcache php8-ctype \
   php8-intl php8-bcmath php8-dom php8-mbstring php8-xmlreader php8-redis php8-tokenizer
 
 # php config

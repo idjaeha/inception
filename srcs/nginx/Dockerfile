@@ -1,4 +1,4 @@
-FROM alpine:3.15.0
+FROM alpine:3.13
 
 RUN	apk update && apk upgrade && apk add --no-cache \
         nginx \
@@ -14,6 +14,8 @@ RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
 # nginx config
 RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY index.html /tmp/index.html
+COPY configure.sh /tmp/configure.sh
 
-# Start nginx
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# # Start nginx
+ENTRYPOINT ["sh", "/tmp/configure.sh"]
