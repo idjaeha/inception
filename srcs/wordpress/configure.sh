@@ -1,17 +1,15 @@
 #!/bin/sh
-
-# wait for mysql
-while ! mariadb -h$MYSQL_HOST -u$WP_DATABASE_USR -p$WP_DATABASE_PWD $WP_DATABASE_NAME &>/dev/null; do
-    sleep 3
+until mysql --host=mariadb --user=$MYSQL_USER --password=$MYSQL_PASSWORD -e '\c'; do
+  echo >&2 "mariadb is unavailable - sleeping"
+  sleep 1
 done
 
-    echo "wordpress setup...2"
 if [ ! -f "/var/www/html/index.html" ]; then
-
-    echo "wordpress setup..."
-
     # static website
     mv /tmp/index.html /var/www/html/index.html
+
+    mkdir /var/www/html/wordpress
+    cd /var/www/html/wordpress
 
     wp core download --locale=ko_KR --allow-root
     wp config create --dbname=$WP_DATABASE_NAME --dbuser=$WP_DATABASE_USR --dbpass=$WP_DATABASE_PWD --dbhost=$MYSQL_HOST --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root

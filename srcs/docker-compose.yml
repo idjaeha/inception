@@ -1,23 +1,6 @@
 version: '3'
 
 services:
-  nginx:
-    build: nginx/
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "~/Desktop/inception/website:/var/www/html"
-    # depends_on:
-    #   - wordpress
-    networks:
-      - intra
-    restart: always
-    env_file:
-      - .env
-    tty: true
-
   mariadb:
     build: mariadb/
     container_name: mariadb
@@ -32,21 +15,38 @@ services:
       - .env
     tty: true
 
-  # wordpress:
-  #   build: wordpress/
-  #   container_name: wordpress
-  #   ports:
-  #     - "9000:9000"
-  #   volumes:
-  #     - "~/Desktop/inception/website:/var/www/html"
-  #   depends_on:
-  #     - mariadb
-  #   networks:
-  #     - intra
-  #   restart: always
-  #   env_file:
-  #     - .env
-  #   tty: true
+  wordpress:
+    build: wordpress/
+    container_name: wordpress
+    ports:
+      - "9000:9000"
+    volumes:
+      - "~/Desktop/inception/website:/var/www/html"
+    depends_on:
+      - mariadb
+    networks:
+      - intra
+    restart: always
+    env_file:
+      - .env
+    tty: true
+
+  nginx:
+    build: nginx/
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "~/Desktop/inception/website:/var/www/html"
+    depends_on:
+      - wordpress
+    networks:
+      - intra
+    restart: always
+    env_file:
+      - .env
+    tty: true
 
 networks:
   intra:
