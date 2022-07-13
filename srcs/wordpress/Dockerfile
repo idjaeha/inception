@@ -16,9 +16,6 @@ RUN	adduser -S nginx &&	addgroup -S nginx
 COPY default/php-fpm.conf /etc/php8/php-fpm.conf
 COPY default/www.conf /etc/php8/php-fpm.d/www.conf
 
-# static website
-COPY default/index.html /tmp/index.html
-
 # install wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN chmod +x wp-cli.phar
