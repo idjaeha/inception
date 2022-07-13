@@ -13,8 +13,8 @@ RUN	apk update && apk upgrade && apk add --no-cache \
 
 # php config
 RUN	adduser -S nginx &&	addgroup -S nginx
-COPY default/php-fpm.conf /etc/php8/php-fpm.conf
-COPY default/www.conf /etc/php8/php-fpm.d/www.conf
+COPY conf/php-fpm.conf /etc/php8/php-fpm.conf
+COPY conf/www.conf /etc/php8/php-fpm.d/www.conf
 
 # install wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -22,5 +22,5 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/bin/wp
 RUN ln -s /usr/bin/php8 /usr/bin/php
 
-COPY configure.sh /tmp/wp_configure.sh
+COPY tools/configure.sh /tmp/wp_configure.sh
 ENTRYPOINT [ "sh", "/tmp/wp_configure.sh" ]

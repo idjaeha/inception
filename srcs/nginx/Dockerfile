@@ -17,8 +17,8 @@ EXPOSE 443
 
 # nginx config
 RUN mkdir -p /run/nginx
-COPY nginx.conf /etc/nginx/http.d/default.conf
-COPY configure.sh /tmp/nginx_configure.sh
+COPY conf/nginx.conf /etc/nginx/http.d/default.conf
+COPY tools/configure.sh /tmp/nginx_configure.sh
 
 # # Start nginx
 ENTRYPOINT ["sh", "/tmp/nginx_configure.sh"]
