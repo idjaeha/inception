@@ -2,12 +2,12 @@ version: '3'
 
 services:
   mariadb:
-    build: mariadb/
+    build: requirements/mariadb/
     container_name: mariadb
     ports:
       - "3306:3306"
     volumes:
-      - "~/Desktop/inception/mariadb:/var/lib/mysql"
+      - "~/data/mariadb:/var/lib/mysql"
     networks:
       - intra
     restart: always
@@ -16,12 +16,12 @@ services:
     tty: true
 
   wordpress:
-    build: wordpress/
+    build: requirements/wordpress/
     container_name: wordpress
     ports:
       - "9000:9000"
     volumes:
-      - "~/Desktop/inception/website:/var/www/html"
+      - "~/data/website:/var/www/html"
     depends_on:
       - mariadb
     networks:
@@ -32,13 +32,12 @@ services:
     tty: true
 
   nginx:
-    build: nginx/
+    build: requirements/nginx/
     container_name: nginx
     ports:
-      - "80:80"
       - "443:443"
     volumes:
-      - "~/Desktop/inception/website:/var/www/html"
+      - "~/data/website:/var/www/html"
     depends_on:
       - wordpress
     networks:
